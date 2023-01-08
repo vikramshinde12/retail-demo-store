@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sample-retail-app
+  name: sample-retail-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sample-retail-app
+  template:
+    metadata:
+      labels:
+        app: sample-retail-app
+    spec:
+      containers:
+      - name: sample-retail-app
+        image: vikramshinde/sample-retail-app:v1
+        ports:
+          - containerPort: 8080
