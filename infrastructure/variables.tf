@@ -1,6 +1,6 @@
 variable "project_name" {
-   description = "The project ID where all resources will be launched."
-  type = string
+  description = "The project ID where all resources will be launched."
+  type        = string
 }
 
 variable "region" {
