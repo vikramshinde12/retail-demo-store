@@ -15,8 +15,8 @@ resource "google_compute_security_policy" "policy" {
   }
 
   rule {
-    action   = "deny(403)"
-    priority = "2147483647"
+    action      = "deny(403)"
+    priority    = "2147483647"
     description = "Default rule: deny all"
 
     match {
