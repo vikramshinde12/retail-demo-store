@@ -34,7 +34,7 @@ jobs:
       run: black --diff --check ${{ env.py_files }}
 
     - name: Type checking with mypy
-      run: mypy ${{ env.py_files }}
+      run: mypy ${{ env.py_files }} --explicit-package-bases
 
     - name: Python style guide checker with pycodestyle
       run: pycodestyle ${{ env.py_files }}
