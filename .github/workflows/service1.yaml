@@ -30,7 +30,6 @@ jobs:
 
   Deploy:
     runs-on: ubuntu-latest
-#      environmet: test
     needs: Build
 
     steps:
