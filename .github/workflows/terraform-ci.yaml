@@ -1,5 +1,6 @@
 name: 'Terraform CI'
 
+on:
   push:
     paths:
       - 'infrastructure/**'
