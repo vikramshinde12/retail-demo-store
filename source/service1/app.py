@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "This is Service1 Version27"
+    return "This is Service1 Version28"
 
 
 if __name__ == "__main__":

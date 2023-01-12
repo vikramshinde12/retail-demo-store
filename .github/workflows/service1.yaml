@@ -63,6 +63,6 @@ jobs:
     - name: Deploy
       working-directory: source/service1/kubernetes
       run: |-
-        kubernetes apply -f .
+        kubectl apply -f .
 #          envsubst < Service.yml | kubectl apply -f -
 #          envsubst < Deployment.yml | kubectl apply -f -
