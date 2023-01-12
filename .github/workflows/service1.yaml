@@ -6,7 +6,7 @@ on:
       - 'source/service1/**'
 
 jobs:
-  docker:
+  Build:
     runs-on: ubuntu-latest
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -14,16 +14,47 @@ jobs:
         shell: bash
         working-directory: source/service1/
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag vikramshinde/service1:latest
+      steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag vikramshinde/service1:latest
 
-    - name: Login to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Push the Docker image
-      run: docker push vikramshinde/service1:latest
+      - name: Push the Docker image
+        run: docker push vikramshinde/service1:latest
+
+    Deploy:
+      runs-on: ubuntu-latest
+#      environmet: test
+      needs: Build
+
+      steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@v0.6.0
+        with:
+          service_account_key: ${{ secrets.GKE_SA_KEY }}
+          project_id: ${{ secrets.GKE_PROJECT }}
+          export_default_credentials: true
+
+        # Get the GKE credentials so we can deploy to the cluster
+      - name: Get GKE Cred
+      - uses: google-github-actions/get-gke-credentials@v0.5.0
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+          credentials: ${{ secrets.GKE_SA_KEY }}
+
+      # Deploy the new Docker image to the GKE cluster
+      - name: Deploy
+        working-directory: source/service1/kubernetes
+        run: |-
+          kubernetes apply -f .
+#          envsubst < Service.yml | kubectl apply -f -
+#          envsubst < Deployment.yml | kubectl apply -f -
