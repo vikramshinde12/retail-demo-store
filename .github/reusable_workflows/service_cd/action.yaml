@@ -1,0 +1,52 @@
+name: 'Local Action'
+description: 'Runs a composite step action'
+inputs:
+  service-name:
+    required: true
+    description: "Service Name to Build and Deploy"
+  dockerhub-username:
+    required: true
+    description: "Service Name to Build and Deploy"
+  dockerhub-token:
+    required: true
+    description: "Service Name to Build and Deploy"
+  path:
+    required: true
+    description: "Service Name to Build and Deploy"
+  cluster_name:
+    required: true
+    description: "Service Name to Build and Deploy"
+  credentials:
+    required: true
+    description: "Service Name to Build and Deploy"
+
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Setup gcloud CLI
+      uses: google-github-actions/setup-gcloud@v0.6.0
+      with:
+        service_account_key: ${{ inputs.credentials }}
+        project_id: ${{ env.GKE_PROJECT }}
+        export_default_credentials: true
+
+      # Get the GKE credentials so we can deploy to the cluster
+    - name: Get GKE Cred
+      uses: google-github-actions/get-gke-credentials@v0.5.0
+      with:
+        cluster_name: ${{ inputs.cluster_name }}
+        location: ${{ env.GKE_REGION }}
+        credentials: ${{ inputs.credentials }}
+
+    # Deploy the new Docker image to the GKE cluster
+    - name: Deploy
+      working-directory: ${{ inputs.path}}/kubernetes
+      shell: bash
+      run: |-
+        kubectl apply -f .
+#          envsubst < Service.yml | kubectl apply -f -
+#          envsubst < Deployment.yml | kubectl apply -f -

@@ -1,0 +1,36 @@
+name: 'Local Action'
+description: 'Runs a composite step action'
+inputs:
+  service-name:
+    required: true
+    description: "Service Name to Build and Deploy"
+  dockerhub-username:
+    required: true
+    description: "Service Name to Build and Deploy"
+  dockerhub-token:
+    required: true
+    description: "Service Name to Build and Deploy"
+  path:
+    required: true
+    description: "Service Name to Build and Deploy"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag vikramshinde/${{ inputs.service-name }}:latest
+      shell: bash
+      working-directory: ${{ inputs.path}}
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ inputs.dockerhub-username }}
+        password: ${{ inputs.dockerhub-token }}
+
+    - name: Push the Docker image
+      run: docker push vikramshinde/${{ inputs.service-name }}:latest
+      shell: bash
