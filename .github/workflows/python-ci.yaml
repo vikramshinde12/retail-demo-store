@@ -1,9 +1,12 @@
 name: Python CI
 
 on:
-  push:
-    paths:
-      - 'source/**'
+  workflow_dispatch:
+    inputs:
+      config-path:
+        required: true
+        type: string
+        default: 'path'
 
 jobs:
   build:
