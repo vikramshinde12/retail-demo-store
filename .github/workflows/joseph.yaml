@@ -49,11 +49,11 @@ jobs:
           workload_identity_provider: 'projects/305838052621/locations/global/workloadIdentityPools/githubaction/providers/github'
           service_account: 'cicd-myserviceaccount@my-project-1995-369514.iam.gserviceaccount.com'
 
-    - id: 'deploy'
-      uses: 'google-github-actions/deploy-cloudrun@v1'
-      with:
-        service: 'hello-cloud-run'
-        image: 'gcr.io/cloudrun/hello'
+      - id: 'deploy'
+        uses: 'google-github-actions/deploy-cloudrun@v1'
+        with:
+          service: 'hello-cloud-run'
+          image: 'gcr.io/cloudrun/hello'
 
     - name: 'Use output'
       run: 'curl "${{ steps.deploy.outputs.url }}"'
