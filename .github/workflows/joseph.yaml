@@ -1,0 +1,59 @@
+name: 'joseph_test'
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/joseph.yaml'
+
+
+env:
+#  GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
+  PROJECT_ID: my-project-1995-369514
+  INSTANCE_REGION: us-central1
+  INSTANCE_NAME: bigquery-sql
+  REPO: gcprepo
+  DB_PORT: 3306
+  DB_USER: root
+  DB_PASS: 1234
+  DB_NAME: bq-sql
+
+jobs:
+  terraform:
+    name: 'Cloudfuntion'
+    runs-on: ubuntu-latest
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: cloudsql/
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v3
+
+#      - uses: google-github-actions/setup-gcloud@v0.6.0
+#        with:
+#          service_account_key: ${{ secrets.CICD_SECRET }}
+#          project_id: ${{ secrets.PROJECT_ID }}
+#          export_default_credentials: true
+
+      - uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/305838052621/locations/global/workloadIdentityPools/githubaction/providers/github'
+          service_account: 'cicd-myserviceaccount@my-project-1995-369514.iam.gserviceaccount.com'
+
+    - id: 'deploy'
+      uses: 'google-github-actions/deploy-cloudrun@v1'
+      with:
+        service: 'hello-cloud-run'
+        image: 'gcr.io/cloudrun/hello'
+
+    - name: 'Use output'
+      run: 'curl "${{ steps.deploy.outputs.url }}"'
