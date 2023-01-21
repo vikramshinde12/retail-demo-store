@@ -7,27 +7,15 @@ on:
       - '.github/workflows/joseph.yaml'
 
 
-env:
-#  GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
-  PROJECT_ID: my-project-1995-369514
-  INSTANCE_REGION: us-central1
-  INSTANCE_NAME: bigquery-sql
-  REPO: gcprepo
-  DB_PORT: 3306
-  DB_USER: root
-  DB_PASS: 1234
-  DB_NAME: bq-sql
-
 jobs:
-  terraform:
-    name: 'Cloudfuntion'
+  job:
+    name: 'Joseph Test'
     runs-on: ubuntu-latest
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
         shell: bash
-        working-directory: cloudsql/
 
     permissions:
       contents: 'read'
@@ -46,7 +34,7 @@ jobs:
       - id: 'deploy'
         uses: 'google-github-actions/deploy-cloudrun@v1'
         with:
-          service: 'hello-cloud-run'
+          service: 'Vikram-cloud-run'
           image: 'gcr.io/cloudrun/hello'
           flags: '--allow-unauthenticated'
 
