@@ -38,12 +38,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-#      - uses: google-github-actions/setup-gcloud@v0.6.0
-#        with:
-#          service_account_key: ${{ secrets.CICD_SECRET }}
-#          project_id: ${{ secrets.PROJECT_ID }}
-#          export_default_credentials: true
-
       - uses: 'google-github-actions/auth@v1'
         with:
           workload_identity_provider: 'projects/305838052621/locations/global/workloadIdentityPools/githubaction/providers/github'
@@ -55,5 +49,5 @@ jobs:
           service: 'hello-cloud-run'
           image: 'gcr.io/cloudrun/hello'
 
-    - name: 'Use output'
-      run: 'curl "${{ steps.deploy.outputs.url }}"'
+      - name: 'Use output'
+        run: 'curl "${{ steps.deploy.outputs.url }}"'
