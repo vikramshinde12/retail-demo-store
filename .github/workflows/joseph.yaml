@@ -48,6 +48,7 @@ jobs:
         with:
           service: 'hello-cloud-run'
           image: 'gcr.io/cloudrun/hello'
+          flags: '--allow-unauthenticated'
 
       - name: 'Use output'
         run: 'curl "${{ steps.deploy.outputs.url }}"'
