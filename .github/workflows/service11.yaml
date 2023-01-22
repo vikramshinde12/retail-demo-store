@@ -4,7 +4,12 @@ on:
   push:
     paths:
       - 'source/service1/**'
-
+  workflow_dispatch:
+    inputs:
+      config-path:
+        required: true
+        type: string
+        default: 'source/service1/**'
 env:
   GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: autopilot-cluster-1
