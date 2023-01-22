@@ -31,17 +31,17 @@ jobs:
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           path: "source/service1/"
 
-  Deploy:
-    runs-on: ubuntu-latest
-    needs: Build
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Service CD
-        uses: ./.github/reusable_workflows/service_cd
-        with:
-          service-name: ${{ env.GKE_SERVICE }}
-          cluster_name: ${{ env.GKE_CLUSTER }}
-          location: ${{ env.GKE_REGION }}
-          credentials: ${{ secrets.GKE_SA_KEY }}
-          path: "source/service1/"
+#  Deploy:
+#    runs-on: ubuntu-latest
+#    needs: Build
+#
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Service CD
+#        uses: ./.github/reusable_workflows/service_cd
+#        with:
+#          service-name: ${{ env.GKE_SERVICE }}
+#          cluster_name: ${{ env.GKE_CLUSTER }}
+#          location: ${{ env.GKE_REGION }}
+#          credentials: ${{ secrets.GKE_SA_KEY }}
+#          path: "source/service1/"
