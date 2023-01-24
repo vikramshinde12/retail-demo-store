@@ -22,9 +22,6 @@ env:
 jobs:
   Build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
 
     steps:
       - uses: actions/checkout@v3
@@ -41,11 +38,11 @@ jobs:
 #    needs: Build
 #
 #    steps:
-#      - uses: actions/checkout@v3
+#      - uses: actions/checkout@
 #      - name: Service CD
-#        uses: ./.github/reusable_workflows/service_cd
+#        uses: ./.github/reusable_workflows/service_cd1
 #        with:
-#          service-name: ${{ env.GKE_SERVICE }}
+#          service-name: ${{ env.GKE_SERVICE
 #          cluster_name: ${{ env.GKE_CLUSTER }}
 #          location: ${{ env.GKE_REGION }}
 #          credentials: ${{ secrets.GKE_SA_KEY }}
